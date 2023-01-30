@@ -2,6 +2,8 @@
 
 namespace CodingTest\Interpolation\Infrastructure\Repository\FeeStructure;
 
+use CodingTest\Interpolation\Application\Repository\FeeStructureRepository;
+
 class InMemoryFeeStructureRepository implements FeeStructureRepository
 {
     public function getFeeStructure(): array

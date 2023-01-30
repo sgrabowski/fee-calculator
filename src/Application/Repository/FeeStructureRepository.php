@@ -1,6 +1,6 @@
 <?php
 
-namespace CodingTest\Interpolation\Infrastructure\Repository\FeeStructure;
+namespace CodingTest\Interpolation\Application\Repository;
 
 interface FeeStructureRepository
 {

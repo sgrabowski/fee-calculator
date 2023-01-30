@@ -2,6 +2,7 @@
 
 namespace CodingTest\Interpolation\Tests\Integration\Application\Service\FeeCalculator;
 
+use CodingTest\Interpolation\Application\Provider\RepositorySortedFeeStructureProvider;
 use CodingTest\Interpolation\Application\Service\FeeCalculator\FeeCalculator;
 use CodingTest\Interpolation\Domain\Service\FeeCalculation\FeeCalculator as DomainCalculatorService;
 use CodingTest\Interpolation\Domain\Value\LoanApplication;
@@ -17,9 +18,10 @@ class FeeCalculatorTest extends TestCase
     protected function setUp(): void
     {
         $feeStructureRepository = new InMemoryFeeStructureRepository();
-        $domainCalculator = new DomainCalculatorService();
+        $feeStructureProvider = new RepositorySortedFeeStructureProvider($feeStructureRepository);
+        $domainCalculator = new DomainCalculatorService($feeStructureProvider);
 
-        $this->calculator = new FeeCalculator($feeStructureRepository, $domainCalculator);
+        $this->calculator = new FeeCalculator($domainCalculator);
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace CodingTest\Interpolation\Tests\Unit\Domain\Service\FeeCalculator;
 
 use CodingTest\Interpolation\Domain\Service\FeeCalculation\FeeCalculator;
+use CodingTest\Interpolation\Domain\Service\FeeCalculation\Provider\SortedFeeStructureProvider;
 use CodingTest\Interpolation\Domain\Value\Builder\FeeStructureBuilder;
 use CodingTest\Interpolation\Domain\Value\FeeBreakpoint;
 use CodingTest\Interpolation\Domain\Value\LoanApplication;
@@ -49,8 +50,12 @@ class FeeCalculatorTest extends TestCase
      */
     public function calculates_interpolated_rounded_fees(LoanApplication $loanApplication, MoneyAmount $expectedFee): void
     {
-        $calculator = new FeeCalculator();
-        $fee = $calculator->calculate($loanApplication, $this->structure);
+        $provider = $this->createMock(SortedFeeStructureProvider::class);
+        $provider->expects($this->once())->method('provide')->willReturnCallback(function () {
+            return $this->structure;
+        });
+        $calculator = new FeeCalculator($provider);
+        $fee = $calculator->calculate($loanApplication);
 
         $this->assertSame($expectedFee->value(), $fee->value());
     }
